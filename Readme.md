@@ -12,6 +12,7 @@ _`.editorconfig`, `.gitattributes`._
 
  master
 
+
 ### Памятка
 
 #### 1. Зарегистрируйтесь на Гитхабе
