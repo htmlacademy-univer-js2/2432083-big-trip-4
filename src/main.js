@@ -1,24 +1,26 @@
-import { render } from './framework/render.js';
-import FiltersView from './view/filters-view.js';
-import TripEventsPresenter from './presenter/trip-events-presenter.js';
-import SiteMenuView from './view/site-menu-view.js';
-import PointsModel from './model/point-model.js';
-import { getPoints, getDestinations, getOffersByType } from './mock/point.js';
-import { generateFilter } from './mock/filter.js';
+import TripPresenter from './presenter/trip-presenter.js';
+import PointsApiService from './service/points-api-service.js';
+import PointModel from './model/point-model.js';
+import OfferModel from './model/offer-model.js';
+import DestinationModel from './model/destination-model.js';
 
-const siteHeaderElement = document.querySelector('.trip-main');
 const siteMainElement = document.querySelector('.page-main');
-const tripPresenter = new TripEventsPresenter(siteMainElement.querySelector('.trip-events'));
 
-const points = getPoints();
-const offersByType = getOffersByType();
-const destinations = getDestinations();
+const tripContainer = {
+  mainElement: siteMainElement,
+  tripMainElement: document.querySelector('.trip-main'),
+  eventListElement: siteMainElement.querySelector('.trip-events'),
+  filtersElement: document.querySelector('.trip-controls__filters'),
+  newEvtButtonElement: document.querySelector('.trip-main__event-add-btn')
+};
 
-const pointsModel = new PointsModel();
-pointsModel.init(points, destinations, offersByType);
-tripPresenter.init(pointsModel);
+const pointsApiService = new PointsApiService('https://21.objects.htmlacademy.pro/big-trip', 'Basic privetgleb1');
+const offerModel = new OfferModel(pointsApiService);
+const destinationModel = new DestinationModel(pointsApiService);
+const pointModel = new PointModel(pointsApiService, destinationModel, offerModel);
 
-const filters = generateFilter(pointsModel.points);
-
-render(new FiltersView({filters}), siteHeaderElement.querySelector('.trip-controls__filters'));
-render(new SiteMenuView(), siteHeaderElement.querySelector('.trip-controls__navigation'));
+const tripPresenter = new TripPresenter({ tripContainer, pointModel, offerModel, destinationModel });
+pointModel.init().finally(() => {
+  tripContainer.newEvtButtonElement.style.visibility = 'visible';
+});
+tripPresenter.init();

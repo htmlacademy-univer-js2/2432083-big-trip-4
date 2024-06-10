@@ -1,7 +1,7 @@
 .ui-blocker {
   display: none;
   place-content: center;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
@@ -18,7 +18,7 @@
   border: 6px solid #4285F4;
   box-sizing: border-box;
   animation: sweep 1s linear alternate infinite,
-             rotate 0.8s linear infinite;
+    rotate 0.8s linear infinite;
   width: 65px;
   height: 65px;
 }
@@ -31,6 +31,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -40,9 +41,11 @@
   0% {
     clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 50% 50%, 0% 0%, 0% 0%, 0% 0%);
   }
+
   50% {
     clip-path: polygon(0% 0%, 0% 100%, 0% 100%, 50% 50%, 100% 0%, 100% 0%, 0% 0%);
   }
+
   100% {
     clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 50% 50%, 100% 100%, 100% 0%, 0% 0%);
   }
